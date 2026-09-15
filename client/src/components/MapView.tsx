@@ -177,8 +177,7 @@ export default function MapView({ trajectory, systemStatus }: MapViewProps) {
                   </div>
                 </Popup>
               </Marker>
-            );
-          })}
+          ))}
 
           {/* Animated trajectory */}
           <TrajectoryAnimator trajectory={trajectory} />
