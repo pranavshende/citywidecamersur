@@ -13,7 +13,13 @@ export function useWebSocket() {
 
   useEffect(() => {
     function connect() {
-      ws.current = new WebSocket('ws://localhost:5000');
+      // In dev: VITE_API_URL is empty, so we use relative WS (Vite proxy handles it).
+      // In production: VITE_API_URL = https://your-backend.onrender.com -> replace with wss://
+      const apiUrl = import.meta.env.VITE_API_URL as string | undefined;
+      const wsUrl = apiUrl
+        ? apiUrl.replace(/^http/, 'ws')
+        : `ws://${window.location.hostname}:5000`;
+      ws.current = new WebSocket(wsUrl);
 
       ws.current.onopen = () => {
         setConnected(true);
