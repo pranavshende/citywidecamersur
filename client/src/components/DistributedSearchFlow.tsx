@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Server, Database, Video, ChevronRight } from 'lucide-react';
+import { Server, Database, Video, ChevronRight, Search as SearchIcon } from 'lucide-react';
 
 interface Props {
   status: 'idle' | 'searching' | 'aggregating' | 'complete';
