@@ -28,20 +28,35 @@ const cameraIcon = (status?: string) => L.divIcon({
 });
 
 // Detection point icon
-const detectionIcon = (index: number) => L.divIcon({
-  className: '',
-  html: `<div style="
-    width: 32px; height: 32px; border-radius: 50%;
-    background: linear-gradient(135deg, #10b981, #059669);
-    border: 2px solid #34d399;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800; color: white;
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
-    animation: pulse-green 2s infinite;
-  ">${index + 1}</div>`,
-  iconSize: [32, 32],
-  iconAnchor: [16, 16]
-});
+const detectionIcon = (index: number, isStart: boolean, isEnd: boolean) => {
+  let bg = 'linear-gradient(135deg, #3b82f6, #2563eb)'; // Blue (Intermediate)
+  let border = '#60a5fa';
+  let shadow = 'rgba(59, 130, 246, 0.5)';
+  
+  if (isStart) {
+    bg = 'linear-gradient(135deg, #ef4444, #dc2626)'; // Red (Start)
+    border = '#f87171';
+    shadow = 'rgba(239, 68, 68, 0.5)';
+  } else if (isEnd) {
+    bg = 'linear-gradient(135deg, #10b981, #059669)'; // Green (End)
+    border = '#34d399';
+    shadow = 'rgba(16, 185, 129, 0.5)';
+  }
+
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+      width: 28px; height: 28px; border-radius: 50%;
+      background: ${bg};
+      border: 2px solid ${border};
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: white;
+      box-shadow: 0 0 12px ${shadow};
+    ">${index + 1}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14]
+  });
+};
 
 import { Trajectory, SystemStatus, TrajectoryPoint } from '../types';
 
@@ -96,12 +111,16 @@ function TrajectoryAnimator({ trajectory }: { trajectory: Trajectory | null }) {
       />
 
       {/* Detection points */}
-      {visiblePoints.map((point, index) => (
-        <Marker
-          key={`det-${index}`}
-          position={[point.latitude, point.longitude]}
-          icon={detectionIcon(index)}
-        >
+      {visiblePoints.map((point, index) => {
+        const isStart = index === 0;
+        const isEnd = index === visiblePoints.length - 1;
+        
+        return (
+          <Marker
+            key={`det-${index}`}
+            position={[point.latitude, point.longitude]}
+            icon={detectionIcon(index, isStart, isEnd)}
+          >
           <Popup>
             <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 13, minWidth: 180 }}>
               <div style={{ fontWeight: 700, marginBottom: 4 }}>{point.camera_id}</div>
@@ -121,7 +140,8 @@ function TrajectoryAnimator({ trajectory }: { trajectory: Trajectory | null }) {
             </div>
           </Popup>
         </Marker>
-      ))}
+        );
+      })}
     </>
   );
 }
