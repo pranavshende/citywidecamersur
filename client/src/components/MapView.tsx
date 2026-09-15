@@ -45,25 +45,6 @@ const detectionIcon = (index: number) => L.divIcon({
 
 import { Trajectory, SystemStatus, TrajectoryPoint } from '../types';
 
-// Camera positions from scenario
-const CAMERA_POSITIONS = [
-  { id: 'CAM-01', name: 'Sitabuldi Junction', lat: 21.1458, lng: 79.0882 },
-  { id: 'CAM-02', name: 'Variety Square', lat: 21.1495, lng: 79.0810 },
-  { id: 'CAM-03', name: 'Dharampeth Tower', lat: 21.1520, lng: 79.0720 },
-  { id: 'CAM-04', name: 'Law College Square', lat: 21.1400, lng: 79.0650 },
-  { id: 'CAM-05', name: 'Hingna T-Point', lat: 21.1300, lng: 79.0500 },
-  { id: 'CAM-06', name: 'Sadar Bazaar', lat: 21.1610, lng: 79.0830 },
-  { id: 'CAM-07', name: 'VCA Stadium', lat: 21.1630, lng: 79.0780 },
-  { id: 'CAM-08', name: 'Wardhaman Nagar Sq', lat: 21.1450, lng: 79.1150 },
-  { id: 'CAM-09', name: 'Garoba Maidan', lat: 21.1480, lng: 79.1100 },
-  { id: 'CAM-10', name: 'Manish Nagar T-Point', lat: 21.0950, lng: 79.0600 },
-  { id: 'CAM-11', name: 'Besa Square', lat: 21.0900, lng: 79.0700 },
-  { id: 'CAM-12', name: 'Gandhi Gate', lat: 21.1420, lng: 79.1020 },
-  { id: 'CAM-13', name: 'Kalyaneshwari Mandir', lat: 21.1390, lng: 79.1050 },
-  { id: 'CAM-14', name: 'Itwari Station', lat: 21.1550, lng: 79.1100 },
-  { id: 'CAM-15', name: 'Mankapur Stadium', lat: 21.1750, lng: 79.0750 }
-];
-
 // Animate trajectory rendering
 function TrajectoryAnimator({ trajectory }: { trajectory: Trajectory | null }) {
   const map = useMap();
@@ -151,6 +132,7 @@ interface MapViewProps {
 }
 
 export default function MapView({ trajectory, systemStatus }: MapViewProps) {
+  // Extract all cameras dynamically from the real system status
   const cameras = systemStatus?.edge_nodes?.flatMap(n => n.cameras) || [];
 
   return (
@@ -174,25 +156,23 @@ export default function MapView({ trajectory, systemStatus }: MapViewProps) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
 
-          {/* Camera markers */}
-          {CAMERA_POSITIONS.map(cam => {
-            const camStatus = cameras.find(c => c.id === cam.id);
-            return (
-              <Marker
-                key={cam.id}
-                position={[cam.lat, cam.lng]}
-                icon={cameraIcon(camStatus?.status)}
-              >
+          {/* Camera markers dynamically rendered from backend state */}
+          {cameras.map(cam => (
+            <Marker
+              key={cam.id}
+              position={[cam.lat, cam.lng]}
+              icon={cameraIcon(cam.status)}
+            >
                 <Popup>
                   <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 13 }}>
                     <div style={{ fontWeight: 700 }}>{cam.id}</div>
                     <div style={{ color: '#666' }}>{cam.name}</div>
                     <div style={{
                       marginTop: 4,
-                      color: camStatus?.status === 'offline' ? '#ef4444' : '#10b981',
+                      color: cam.status === 'offline' ? '#ef4444' : '#10b981',
                       fontWeight: 600, fontSize: 12
                     }}>
-                      ● {(camStatus?.status || 'online').toUpperCase()}
+                      ● {(cam.status || 'online').toUpperCase()}
                     </div>
                   </div>
                 </Popup>
