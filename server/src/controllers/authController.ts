@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../config/db';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'secret123';
+import { JWT_SECRET } from '../middlewares/authMiddleware.js';
 
 export async function login(req: Request, res: Response): Promise<void> {
   try {
