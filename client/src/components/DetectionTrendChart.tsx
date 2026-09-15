@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Activity } from 'lucide-react';
+import { apiFetch } from '../lib/api';
 
 interface TrendData {
   time: string;
@@ -14,12 +15,7 @@ export default function DetectionTrendChart() {
   useEffect(() => {
     const fetchTrends = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiUrl}/api/dashboard/trends`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const json = await res.json();
+        const json = await apiFetch<TrendData[]>('/api/dashboard/trends');
         setData(json);
       } catch (e) {
         console.error('Failed to load trends', e);

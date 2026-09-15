@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Car, Users, AlertTriangle, Video, Zap } from 'lucide-react';
+import { apiFetch } from '../lib/api';
 
 interface KPIData {
   total_detections: number;
@@ -17,13 +18,7 @@ export default function KPIGrid() {
   useEffect(() => {
     const fetchKPIs = async () => {
       try {
-        const token = localStorage.getItem('token');
-        // Fallback for dev proxy or env var
-        const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiUrl}/api/dashboard/kpi`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const json = await res.json();
+        const json = await apiFetch<KPIData>('/api/dashboard/kpi');
         setData(json);
       } catch (e) {
         console.error('Failed to load KPIs', e);

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Shield, Lock, User as UserIcon } from 'lucide-react';
 import { User } from '../types';
+import { apiUrl } from '../lib/api';
 
 interface LoginPageProps {
   onLogin: (token: string, user: User) => void;
@@ -14,8 +15,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
-      const res = await fetch(`${apiUrl}/api/auth/login`, {
+      const res = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
