@@ -11,8 +11,9 @@ import authRoutes from './routes/authRoutes';
 import queryRoutes from './routes/queryRoutes';
 import systemRoutes from './routes/systemRoutes';
 import demoRoutes from './routes/demoRoutes';
-import dashboardRoutes from './routes/dashboardRoutes';
-import alertRoutes from './routes/alertRoutes';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import alertRoutes from './routes/alertRoutes.js';
+import vehicleRoutes from './routes/vehicleRoutes.js';
 
 // Services
 import { getEdgeNodeManager } from './edge/EdgeNodeManager';
@@ -35,6 +36,7 @@ app.use('/api/system', systemRoutes);
 app.use('/api/demo', demoRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/alerts', alertRoutes);
+app.use('/api/vehicles', vehicleRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
