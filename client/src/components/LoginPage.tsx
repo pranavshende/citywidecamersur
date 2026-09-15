@@ -1,17 +1,34 @@
 import { useState } from 'react';
 import { Shield, Lock, User as UserIcon } from 'lucide-react';
+import { User } from '../types';
 
 interface LoginPageProps {
-  onLogin: (username: string, pass: string) => void;
+  onLogin: (token: string, user: User) => void;
 }
 
 export default function LoginPage({ onLogin }: LoginPageProps) {
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('password');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(username, password);
+    try {
+      const apiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        onLogin(data.token, data.user);
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (err) {
+      setError('Network error');
+    }
   };
 
   return (
@@ -58,6 +75,12 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                 onChange={e => setPassword(e.target.value)}
               />
             </div>
+
+            {error && (
+              <div style={{ color: 'var(--accent-rose)', fontSize: '0.8rem', textAlign: 'center', marginTop: 4 }}>
+                {error}
+              </div>
+            )}
 
             <button type="submit" className="btn btn-primary w-full" style={{ marginTop: 8, padding: '12px 16px' }}>
               ACCESS TERMINAL

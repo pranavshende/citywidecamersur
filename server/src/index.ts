@@ -11,6 +11,8 @@ import authRoutes from './routes/authRoutes';
 import queryRoutes from './routes/queryRoutes';
 import systemRoutes from './routes/systemRoutes';
 import demoRoutes from './routes/demoRoutes';
+import dashboardRoutes from './routes/dashboardRoutes';
+import alertRoutes from './routes/alertRoutes';
 
 // Services
 import { getEdgeNodeManager } from './edge/EdgeNodeManager';
@@ -31,6 +33,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/query', queryRoutes);
 app.use('/api/system', systemRoutes);
 app.use('/api/demo', demoRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/alerts', alertRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date().toISOString() });
@@ -107,6 +111,9 @@ async function startServer() {
     console.log(`║   Cameras:     ${Array.from(edgeManager.nodes.values()).reduce((sum, n) => sum + n.cameras.length, 0)} active                                   ║`);
     console.log('║   Status:      OPERATIONAL                                ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
+    
+    // Start continuous background traffic
+    edgeManager.startBackgroundTraffic(wss);
   });
 }
 

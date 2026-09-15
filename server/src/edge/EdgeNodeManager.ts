@@ -139,6 +139,108 @@ export class EdgeNodeManager {
       }
     };
   }
+
+  // --- NEW: Continuous Background Traffic Generator ---
+  private _trafficInterval: NodeJS.Timeout | null = null;
+
+  startBackgroundTraffic(wss: any) {
+    if (this._trafficInterval) return;
+    const { PrismaClient } = require('@prisma/client');
+    const prisma = new PrismaClient();
+    const scenarios = require('./scenarios.json');
+
+    console.log('[EdgeManager] Starting continuous background traffic generation...');
+    
+    this._trafficInterval = setInterval(async () => {
+      // Pick a random online camera
+      const onlineNodes = Array.from(this.nodes.values()).filter(n => n.isOnline());
+      if (onlineNodes.length === 0) return;
+      
+      const node = onlineNodes[Math.floor(Math.random() * onlineNodes.length)];
+      const onlineCams = node.cameras.filter(c => c.isOnline());
+      if (onlineCams.length === 0) return;
+      
+      const cam = onlineCams[Math.floor(Math.random() * onlineCams.length)];
+      const bgVehicle = scenarios.background_vehicles[Math.floor(Math.random() * scenarios.background_vehicles.length)];
+
+      const metadataSize = 150 + Math.floor(Math.random() * 80);
+      node.stats.metadata_sent_bytes += metadataSize;
+
+      const detectionData = {
+        camera_id: cam.id,
+        edge_node_id: node.config.id,
+        plate: bgVehicle.plate,
+        vehicle_type: bgVehicle.type,
+        vehicle_color: bgVehicle.color,
+        confidence: 0.75 + Math.random() * 0.2,
+        latitude: cam.lat,
+        longitude: cam.lng,
+        metadata_size_bytes: metadataSize,
+        raw_video_bytes: 0,
+        timestamp: new Date()
+      };
+
+      try {
+        // Save to DB
+        const savedDetection = await prisma.detections.create({ data: detectionData });
+        
+        // 10% chance to trigger an alert
+        if (Math.random() > 0.9) {
+          const alertTypes = [
+            { type: 'Watchlist Vehicle Detected', severity: 'High' },
+            { type: 'Stolen Vehicle Alert', severity: 'Critical' },
+            { type: 'No Insurance', severity: 'Low' },
+            { type: 'Suspicious Vehicle', severity: 'Medium' }
+          ];
+          const alert = alertTypes[Math.floor(Math.random() * alertTypes.length)];
+          
+          const savedAlert = await prisma.alerts.create({
+            data: {
+              severity: alert.severity,
+              alert_type: alert.type,
+              plate: bgVehicle.plate,
+              camera_id: cam.id,
+              edge_node_id: node.config.id,
+              status: 'active'
+            }
+          });
+
+          // Broadcast alert
+          this.broadcast(wss, 'alert:new', {
+            ...savedAlert,
+            camera: { location_name: cam.name } // approximate, normally fetched
+          });
+        }
+
+        // Broadcast detection
+        this.broadcast(wss, 'detection:found', {
+          ...detectionData,
+          id: savedDetection.id,
+          is_background: true
+        });
+
+      } catch (err) {
+        console.error('Traffic generation error:', err);
+      }
+    }, 2500); // Every 2.5 seconds
+  }
+
+  stopBackgroundTraffic() {
+    if (this._trafficInterval) {
+      clearInterval(this._trafficInterval);
+      this._trafficInterval = null;
+    }
+  }
+
+  broadcast(wss: any, event: string, data: any) {
+    if (!wss || !wss.clients) return;
+    const message = JSON.stringify({ event, data, timestamp: new Date().toISOString() });
+    wss.clients.forEach((client: any) => {
+      if (client.readyState === 1) {
+        try { client.send(message); } catch (e) {}
+      }
+    });
+  }
 }
 
 // Singleton

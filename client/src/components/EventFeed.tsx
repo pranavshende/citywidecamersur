@@ -12,13 +12,15 @@ export default function EventFeed({ detections }: EventFeedProps) {
   );
 
   return (
-    <div className="glass-panel h-full flex-col">
-      <div className="glass-header">
-        <span className="glass-title"><ScanEye size={14} className="text-rose" /> Live Intercept Feed</span>
-        <div className="badge badge-rose animate-pulse">LIVE</div>
+    <div className="panel h-full flex flex-col" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div className="panel-header" style={{ justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <ScanEye size={14} className="text-rose" /> Live Intercept Feed
+        </div>
+        <div style={{ background: 'var(--accent-rose)', color: 'white', padding: '2px 8px', borderRadius: 12, fontSize: '0.6rem', fontWeight: 800 }} className="animate-pulse">LIVE</div>
       </div>
 
-      <div className="flex-1 overflow-auto" style={{ padding: 12 }}>
+      <div className="panel-content" style={{ flex: 1, overflowY: 'auto', padding: 12 }}>
         {sorted.length === 0 ? (
           <div style={{ padding: 20, textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
             Awaiting edge node detections...
