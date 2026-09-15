@@ -18,13 +18,6 @@ interface SearchResult {
   };
 }
 
-interface HistoryResult {
-  id: string;
-  plate: string;
-  timestamp: string;
-  camera?: { id: string, name: string, latitude: number, longitude: number };
-}
-
 export default function VehicleSearch() {
   const [plateQuery, setPlateQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
