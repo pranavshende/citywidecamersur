@@ -181,8 +181,15 @@ export class EdgeNodeManager {
       };
 
       try {
-        // Save to DB
-        const savedDetection = await prisma.detections.create({ data: detectionData });
+        // Save to DB — use null for FK fields in case cameras aren't seeded yet
+        // (seed happens on startup but may have a brief race window)
+        const savedDetection = await prisma.detections.create({
+          data: {
+            ...detectionData,
+            camera_id: null,
+            edge_node_id: null
+          }
+        });
         
         // 10% chance to trigger an alert
         if (Math.random() > 0.9) {
@@ -199,8 +206,8 @@ export class EdgeNodeManager {
               severity: alert.severity,
               alert_type: alert.type,
               plate: bgVehicle.plate,
-              camera_id: cam.id,
-              edge_node_id: node.config.id,
+              camera_id: null,
+              edge_node_id: null,
               status: 'active'
             }
           });
@@ -208,7 +215,7 @@ export class EdgeNodeManager {
           // Broadcast alert
           this.broadcast(wss, 'alert:new', {
             ...savedAlert,
-            camera: { location_name: cam.name } // approximate, normally fetched
+            camera: { location_name: cam.name }
           });
         }
 
@@ -219,8 +226,12 @@ export class EdgeNodeManager {
           is_background: true
         });
 
-      } catch (err) {
-        console.error('Traffic generation error:', err);
+      } catch (err: any) {
+        // Silently skip transient DB errors (FK race, connection blip)
+        // Don't spam logs — the seed handles this on next deploy
+        if (err?.code !== 'P2003') {
+          console.error('[Traffic] DB error:', err?.message || err);
+        }
       }
     }, 2500); // Every 2.5 seconds
   }

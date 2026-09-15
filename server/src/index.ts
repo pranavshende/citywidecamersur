@@ -92,12 +92,14 @@ setInterval(() => {
 // Initialize DB and start server
 async function startServer() {
   try {
-    // We can ping Prisma to ensure connection
     await prisma.$connect();
     console.log('[DB] Prisma connected to database successfully.');
   } catch (err: any) {
     console.warn('[DB] Warning during initialization:', err.message);
   }
+
+  // Seed cameras, edge nodes, and users into Postgres so FK constraints are satisfied
+  await seedDatabase();
 
   server.listen(PORT, () => {
     console.log('\n╔════════════════════════════════════════════════════════════╗');
@@ -112,7 +114,7 @@ async function startServer() {
     console.log('║   Status:      OPERATIONAL                                ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
     
-    // Start continuous background traffic
+    // Start continuous background traffic AFTER seed so FK constraints are met
     edgeManager.startBackgroundTraffic(wss);
   });
 }
