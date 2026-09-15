@@ -31,93 +31,92 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
   const getEdgeAnimation = (step: number) => activeStep === step ? 'animate-pulse' : '';
 
   return (
-    <div className="panel flex flex-col h-full" style={{ padding: 20 }}>
-      <div className="flex justify-between items-center mb-6">
+    <div className="panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 24 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
         <div>
-          <h2 className="text-lg font-bold">How Vehicle Search Works</h2>
-          <p className="text-xs text-secondary">Real-time distributed search across city infrastructure</p>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 700, margin: 0 }}>How Vehicle Search Works</h2>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>Real-time distributed search across city infrastructure</p>
         </div>
       </div>
 
       {/* Process Steps Legend */}
-      <div className="flex gap-4 mb-8 text-[0.65rem]">
-        <div className={`flex items-center gap-2 ${activeStep >= 1 ? 'text-primary' : 'text-secondary opacity-50'}`}>
-          <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">1</div>
-          <div><div className="font-bold">Search Request</div><div>User searches vehicle</div></div>
+      <div style={{ display: 'flex', gap: 16, marginBottom: 32, fontSize: '0.65rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: activeStep >= 1 ? 'var(--text-primary)' : 'var(--text-secondary)', opacity: activeStep >= 1 ? 1 : 0.5 }}>
+          <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>1</div>
+          <div><div style={{ fontWeight: 700 }}>Search Request</div><div>User searches vehicle</div></div>
         </div>
-        <div className={`flex items-center gap-2 ${activeStep >= 2 ? 'text-primary' : 'text-secondary opacity-50'}`}>
-          <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">2</div>
-          <div><div className="font-bold">Coordinator</div><div>Distributes request</div></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: activeStep >= 2 ? 'var(--text-primary)' : 'var(--text-secondary)', opacity: activeStep >= 2 ? 1 : 0.5 }}>
+          <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>2</div>
+          <div><div style={{ fontWeight: 700 }}>Coordinator</div><div>Distributes request</div></div>
         </div>
-        <div className={`flex items-center gap-2 ${activeStep >= 3 ? 'text-primary' : 'text-secondary opacity-50'}`}>
-          <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">3</div>
-          <div><div className="font-bold">Parallel Nodes</div><div>Query edges simultaneously</div></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: activeStep >= 3 ? 'var(--text-primary)' : 'var(--text-secondary)', opacity: activeStep >= 3 ? 1 : 0.5 }}>
+          <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>3</div>
+          <div><div style={{ fontWeight: 700 }}>Parallel Nodes</div><div>Query edges simultaneously</div></div>
         </div>
-        <div className={`flex items-center gap-2 ${activeStep >= 4 ? 'text-primary' : 'text-secondary opacity-50'}`}>
-          <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">4</div>
-          <div><div className="font-bold">Cameras</div><div>Each queries cameras</div></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: activeStep >= 4 ? 'var(--text-primary)' : 'var(--text-secondary)', opacity: activeStep >= 4 ? 1 : 0.5 }}>
+          <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>4</div>
+          <div><div style={{ fontWeight: 700 }}>Cameras</div><div>Each queries cameras</div></div>
         </div>
-        <div className={`flex items-center gap-2 ${activeStep >= 5 ? 'text-primary' : 'text-secondary opacity-50'}`}>
-          <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">5</div>
-          <div><div className="font-bold">Aggregation</div><div>Deduplicated & mapped</div></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: activeStep >= 5 ? 'var(--text-primary)' : 'var(--text-secondary)', opacity: activeStep >= 5 ? 1 : 0.5 }}>
+          <div style={{ width: 16, height: 16, borderRadius: '50%', background: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700 }}>5</div>
+          <div><div style={{ fontWeight: 700 }}>Aggregation</div><div>Deduplicated & mapped</div></div>
         </div>
       </div>
 
       {/* Animated Diagram */}
-      <div className="flex items-center justify-between flex-1 px-4">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flex: 1, padding: '0 16px' }}>
         
         {/* User Search */}
-        <div className={`flex flex-col items-center gap-2 transition-opacity duration-500 ${getEdgeOpacity(1)}`}>
-          <div className={`w-16 h-16 rounded-full border-2 border-cyan flex items-center justify-center bg-[rgba(6,182,212,0.1)] ${getEdgeAnimation(1)}`}>
-            <SearchIcon className="text-cyan" size={24} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: getEdgeOpacity(1), transition: 'opacity 0.5s' }}>
+          <div style={{ width: 64, height: 64, borderRadius: '50%', border: '2px solid var(--accent-cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(6,182,212,0.1)', animation: activeStep === 1 ? 'pulse 2s infinite' : 'none' }}>
+            <SearchIcon style={{ color: 'var(--accent-cyan)' }} size={24} />
           </div>
-          <div className="text-xs text-center">
-            <div className="font-bold">Vehicle Search</div>
-            <div className="text-cyan mono">{plate}</div>
+          <div style={{ fontSize: '0.75rem', textAlign: 'center' }}>
+            <div style={{ fontWeight: 700 }}>Vehicle Search</div>
+            <div style={{ color: 'var(--accent-cyan)', fontFamily: 'monospace' }}>{plate}</div>
           </div>
         </div>
 
         {/* Arrow */}
-        <div className={`h-[2px] flex-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-2 transition-opacity duration-500 ${getEdgeOpacity(2)} relative`}>
-          {activeStep === 1 && <div className="absolute top-[-4px] left-0 w-2 h-2 rounded-full bg-white animate-[slideRight_0.5s_linear_forwards]" />}
+        <div style={{ height: 2, flex: 1, background: 'linear-gradient(to right, #06b6d4, #6366f1)', margin: '0 8px', opacity: getEdgeOpacity(2), transition: 'opacity 0.5s', position: 'relative' }}>
         </div>
 
         {/* Coordinator */}
-        <div className={`flex flex-col items-center gap-2 transition-opacity duration-500 ${getEdgeOpacity(2)}`}>
-          <div className={`w-20 h-20 rounded-xl border-2 border-indigo-500 flex items-center justify-center bg-[rgba(99,102,241,0.1)] ${getEdgeAnimation(2)}`}>
-            <Database className="text-indigo-400" size={32} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: getEdgeOpacity(2), transition: 'opacity 0.5s' }}>
+          <div style={{ width: 80, height: 80, borderRadius: 12, border: '2px solid #6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(99,102,241,0.1)', animation: activeStep === 2 ? 'pulse 2s infinite' : 'none' }}>
+            <Database style={{ color: '#818cf8' }} size={32} />
           </div>
-          <div className="text-xs text-center">
-            <div className="font-bold text-indigo-400">Coordinator</div>
-            <div className="text-secondary scale-90">Distributes search</div>
+          <div style={{ fontSize: '0.75rem', textAlign: 'center' }}>
+            <div style={{ fontWeight: 700, color: '#818cf8' }}>Coordinator</div>
+            <div style={{ color: 'var(--text-secondary)', transform: 'scale(0.9)' }}>Distributes search</div>
           </div>
         </div>
 
         {/* Forked Arrows */}
-        <div className="relative h-40 w-16 flex flex-col justify-between items-center mx-2 py-4">
-          <div className={`absolute left-0 w-full h-[2px] top-6 bg-gradient-to-r from-indigo-500 to-emerald-500 transition-opacity duration-500 ${getEdgeOpacity(3)}`} />
-          <div className={`absolute left-0 w-full h-[2px] top-1/2 bg-gradient-to-r from-indigo-500 to-emerald-500 transition-opacity duration-500 ${getEdgeOpacity(3)}`} />
-          <div className={`absolute left-0 w-full h-[2px] bottom-6 bg-gradient-to-r from-indigo-500 to-emerald-500 transition-opacity duration-500 ${getEdgeOpacity(3)}`} />
-          <div className={`absolute left-0 w-[2px] h-[calc(100%-48px)] top-6 bg-indigo-500 transition-opacity duration-500 ${getEdgeOpacity(3)}`} />
+        <div style={{ position: 'relative', height: 160, width: 64, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', margin: '0 8px', padding: '16px 0' }}>
+          <div style={{ position: 'absolute', left: 0, width: '100%', height: 2, top: 24, background: 'linear-gradient(to right, #6366f1, #10b981)', opacity: getEdgeOpacity(3), transition: 'opacity 0.5s' }}></div>
+          <div style={{ position: 'absolute', left: 0, width: '100%', height: 2, top: '50%', background: 'linear-gradient(to right, #6366f1, #10b981)', opacity: getEdgeOpacity(3), transition: 'opacity 0.5s' }}></div>
+          <div style={{ position: 'absolute', left: 0, width: '100%', height: 2, bottom: 24, background: 'linear-gradient(to right, #6366f1, #10b981)', opacity: getEdgeOpacity(3), transition: 'opacity 0.5s' }}></div>
+          <div style={{ position: 'absolute', left: 0, width: 2, height: 'calc(100% - 48px)', top: 24, background: '#6366f1', opacity: getEdgeOpacity(3), transition: 'opacity 0.5s' }}></div>
         </div>
 
         {/* Edge Nodes & Cameras Column */}
-        <div className="flex flex-col gap-6 justify-between h-56">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, justifyContent: 'space-between', height: 224 }}>
           {nodes.map((node, i) => (
-            <div key={i} className={`flex items-center gap-4 transition-opacity duration-500 ${getEdgeOpacity(3)} delay-[${i * 100}ms]`}>
-              <div className={`flex items-center gap-3 border border-emerald-500/50 rounded-lg p-2 bg-[rgba(16,185,129,0.05)] w-36 ${getEdgeAnimation(3)}`}>
-                <Server size={16} className="text-emerald-400" />
-                <div className="text-[0.65rem] leading-tight">
-                  <div className="font-bold text-emerald-400">{node.id}</div>
-                  <div className="text-secondary">({node.zone})</div>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, opacity: getEdgeOpacity(3), transition: 'opacity 0.5s', transitionDelay: `${i * 100}ms` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, border: '1px solid rgba(16,185,129,0.5)', borderRadius: 8, padding: 8, background: 'rgba(16,185,129,0.05)', width: 144, animation: activeStep === 3 ? 'pulse 2s infinite' : 'none' }}>
+                <Server size={16} style={{ color: '#34d399' }} />
+                <div style={{ fontSize: '0.65rem', lineHeight: 1.2 }}>
+                  <div style={{ fontWeight: 700, color: '#34d399' }}>{node.id}</div>
+                  <div style={{ color: 'var(--text-secondary)' }}>({node.zone})</div>
                 </div>
               </div>
-              <ChevronRight size={14} className={`text-emerald-500/50 ${getEdgeOpacity(4)}`} />
-              <div className={`flex items-center gap-2 border border-blue-500/50 rounded-lg p-2 bg-[rgba(59,130,246,0.05)] w-28 transition-opacity duration-500 ${getEdgeOpacity(4)} delay-[${200 + i * 100}ms] ${getEdgeAnimation(4)}`}>
-                <Video size={14} className="text-blue-400" />
-                <div className="text-[0.65rem] leading-tight">
-                  <div className="font-bold text-blue-400">Cameras</div>
-                  <div className="text-secondary">({node.cameras})</div>
+              <ChevronRight size={14} style={{ color: 'rgba(16,185,129,0.5)', opacity: getEdgeOpacity(4) }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid rgba(59,130,246,0.5)', borderRadius: 8, padding: 8, background: 'rgba(59,130,246,0.05)', width: 112, opacity: getEdgeOpacity(4), transition: 'opacity 0.5s', transitionDelay: `${200 + i * 100}ms`, animation: activeStep === 4 ? 'pulse 2s infinite' : 'none' }}>
+                <Video size={14} style={{ color: '#60a5fa' }} />
+                <div style={{ fontSize: '0.65rem', lineHeight: 1.2 }}>
+                  <div style={{ fontWeight: 700, color: '#60a5fa' }}>Cameras</div>
+                  <div style={{ color: 'var(--text-secondary)' }}>({node.cameras})</div>
                 </div>
               </div>
             </div>
@@ -125,21 +124,21 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
         </div>
 
         {/* Merged Arrows */}
-        <div className="relative h-40 w-16 flex flex-col justify-between items-center mx-2 py-4">
-          <div className={`absolute right-0 w-full h-[2px] top-6 bg-gradient-to-r from-blue-500 to-emerald-400 transition-opacity duration-500 ${getEdgeOpacity(5)}`} />
-          <div className={`absolute right-0 w-full h-[2px] top-1/2 bg-gradient-to-r from-blue-500 to-emerald-400 transition-opacity duration-500 ${getEdgeOpacity(5)}`} />
-          <div className={`absolute right-0 w-full h-[2px] bottom-6 bg-gradient-to-r from-blue-500 to-emerald-400 transition-opacity duration-500 ${getEdgeOpacity(5)}`} />
-          <div className={`absolute right-0 w-[2px] h-[calc(100%-48px)] top-6 bg-emerald-400 transition-opacity duration-500 ${getEdgeOpacity(5)}`} />
+        <div style={{ position: 'relative', height: 160, width: 64, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', margin: '0 8px', padding: '16px 0' }}>
+          <div style={{ position: 'absolute', right: 0, width: '100%', height: 2, top: 24, background: 'linear-gradient(to right, #3b82f6, #34d399)', opacity: getEdgeOpacity(5), transition: 'opacity 0.5s' }}></div>
+          <div style={{ position: 'absolute', right: 0, width: '100%', height: 2, top: '50%', background: 'linear-gradient(to right, #3b82f6, #34d399)', opacity: getEdgeOpacity(5), transition: 'opacity 0.5s' }}></div>
+          <div style={{ position: 'absolute', right: 0, width: '100%', height: 2, bottom: 24, background: 'linear-gradient(to right, #3b82f6, #34d399)', opacity: getEdgeOpacity(5), transition: 'opacity 0.5s' }}></div>
+          <div style={{ position: 'absolute', right: 0, width: 2, height: 'calc(100% - 48px)', top: 24, background: '#34d399', opacity: getEdgeOpacity(5), transition: 'opacity 0.5s' }}></div>
         </div>
 
         {/* Final Result */}
-        <div className={`flex flex-col items-center gap-2 transition-opacity duration-500 ${getEdgeOpacity(5)} delay-300`}>
-          <div className={`w-24 h-24 rounded-xl border-2 border-emerald-400 flex items-center justify-center bg-[rgba(16,185,129,0.1)] ${getEdgeAnimation(5)}`}>
-            <Database className="text-emerald-400" size={32} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: getEdgeOpacity(5), transition: 'opacity 0.5s', transitionDelay: '300ms' }}>
+          <div style={{ width: 96, height: 96, borderRadius: 12, border: '2px solid #34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(16,185,129,0.1)', animation: activeStep === 5 ? 'pulse 2s infinite' : 'none' }}>
+            <Database style={{ color: '#34d399' }} size={32} />
           </div>
-          <div className="text-[0.65rem] text-center w-28">
-            <div className="font-bold text-emerald-400 text-xs mb-1">Aggregated Results</div>
-            <div className="text-secondary">Deduplicated, sorted & mapped on GIS</div>
+          <div style={{ fontSize: '0.65rem', textAlign: 'center', width: 112 }}>
+            <div style={{ fontWeight: 700, color: '#34d399', fontSize: '0.75rem', marginBottom: 4 }}>Aggregated Results</div>
+            <div style={{ color: 'var(--text-secondary)' }}>Deduplicated, sorted & mapped on GIS</div>
           </div>
         </div>
 
