@@ -26,7 +26,6 @@
     "prisma": "^5.22.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",
-    "uuid": "^14.0.2",
     "ws": "^8.21.3"
   },
   "devDependencies": {

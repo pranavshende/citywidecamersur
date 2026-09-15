@@ -2,7 +2,7 @@ import { WebSocket } from 'ws';
 import { getEdgeNodeManager } from '../edge/EdgeNodeManager';
 import { buildTrajectory } from './trajectoryService';
 import { prisma } from '../config/db';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { QueryParams, Detection } from '../models/types';
 
 export class CoordinatorService {
@@ -20,7 +20,7 @@ export class CoordinatorService {
    * This is the core coordinator workflow.
    */
   async processQuery(queryParams: QueryParams) {
-    const queryId = uuidv4();
+    const queryId = randomUUID();
     const edgeManager = getEdgeNodeManager();
 
     const steps = [

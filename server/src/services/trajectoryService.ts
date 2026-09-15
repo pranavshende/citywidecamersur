@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { QueryParams, Detection, Trajectory, TrajectoryPoint } from '../models/types';
 
 /**
@@ -47,7 +47,7 @@ export function buildTrajectory(queryId: string, detections: Detection[], query:
   });
 
   return {
-    id: uuidv4(),
+    id: randomUUID(),
     query_id: queryId,
     vehicle_plate: query.plate || sorted[0]?.number_plate || 'UNKNOWN',
     vehicle_color: query.vehicle_color || sorted[0]?.vehicle_color,

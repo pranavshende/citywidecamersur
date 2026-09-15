@@ -1,5 +1,5 @@
 
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { EdgeNodeConfig, CameraConfig, User } from './types';
 
 // SQL for creating tables in Supabase (run via SQL editor in Supabase dashboard)
@@ -353,7 +353,7 @@ export const SEED_CAMERAS: CameraConfig[] = [
 
 export const SEED_USERS: User[] = [
   {
-    id: uuidv4(),
+    id: randomUUID(),
     username: 'officer1',
     password_hash: 'demo123', // Plain text for demo — NOT production
     role: 'police_officer',
@@ -365,7 +365,7 @@ export const SEED_USERS: User[] = [
 export async function seedDatabase(): Promise<void> {
   try {
     console.log('[Schema] Seeding database...');
-    const { prisma } = await import('../config/db');
+    const { prisma } = await import('../config/db.js');
 
     // Seed edge nodes
     for (const node of SEED_EDGE_NODES) {
