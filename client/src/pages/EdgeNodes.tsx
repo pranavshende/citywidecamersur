@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Database, Loader2, Cpu, MemoryStick, Activity } from 'lucide-react';
+import { Database, Loader2, Cpu, MemoryStick } from 'lucide-react';
 import { apiFetch } from '../lib/api';
 
 interface EdgeNode {

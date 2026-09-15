@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Search, Loader2, MapPin, Camera } from 'lucide-react';
+import { useState } from 'react';
+import { Search, Loader2, Camera } from 'lucide-react';
 import { apiFetch } from '../lib/api';
 import MapView from '../components/MapView';
 import { useWebSocket } from '../hooks/useWebSocket';
@@ -55,22 +55,33 @@ export default function VehicleSearch() {
   const loadTrajectory = async (plate: string) => {
     setSelectedPlate(plate);
     try {
-      const res = await apiFetch<{ data: HistoryResult[] }>(`/api/vehicles/${plate}/history`);
+      const res = await apiFetch<{ data: any[] }>(`/api/vehicles/${plate}/history`);
       const points: TrajectoryPoint[] = res.data
         .filter(d => d.camera)
-        .map(d => ({
-          lat: d.camera!.latitude,
-          lng: d.camera!.longitude,
-          timestamp: new Date(d.timestamp).getTime(),
-          cameraId: d.camera!.id
+        .map((d, index) => ({
+          order: index + 1,
+          camera_id: d.camera!.id,
+          edge_node_id: d.edge_node?.id || '',
+          latitude: Number(d.camera!.latitude),
+          longitude: Number(d.camera!.longitude),
+          timestamp: d.timestamp,
+          confidence: Number(d.confidence) || 0.9,
+          vehicle_type: d.vehicle_type || 'Unknown',
+          vehicle_color: d.vehicle_color || 'Unknown',
+          number_plate: d.plate
         }));
 
       if (points.length > 0) {
         setTrajectory({
+          id: `traj-${Date.now()}`,
+          query_id: 'search-query',
           vehicle_plate: plate,
           points,
           first_seen: res.data[0].timestamp,
-          last_seen: res.data[res.data.length - 1].timestamp
+          last_seen: res.data[res.data.length - 1].timestamp,
+          total_detections: points.length,
+          total_distance_km: 0,
+          status: 'complete'
         });
       } else {
         setTrajectory(null);

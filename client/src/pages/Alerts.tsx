@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ShieldAlert, Loader2, Filter, AlertTriangle } from 'lucide-react';
+import { ShieldAlert, Loader2, Filter } from 'lucide-react';
 import { apiFetch } from '../lib/api';
 
 interface Alert {
