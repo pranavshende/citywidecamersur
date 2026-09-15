@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapPin, Download, Loader2, Car, Maximize, Database } from 'lucide-react';
+import { MapPin, Download, Loader2, Car, Maximize, Database, Search } from 'lucide-react';
 import { apiFetch } from '../lib/api';
 import MapView from '../components/MapView';
 import { useWebSocket } from '../hooks/useWebSocket';
@@ -35,7 +35,7 @@ export default function VehicleSearch() {
 
   const handleSearch = async (e?: React.FormEvent, forcePlate?: string) => {
     if (e) e.preventDefault();
-    const targetPlate = forcePlate || plateQuery;
+    const targetPlate = (forcePlate || plateQuery).toUpperCase();
     if (!targetPlate) return;
 
     setLoading(true);
@@ -43,33 +43,22 @@ export default function VehicleSearch() {
     setTrajectory(null);
     setVehicleSummary(null);
 
+    // Proceed animation independently of network delay
+    const animTimer = setTimeout(() => setSearchStatus('aggregating'), 1500);
+
     try {
-      // Fetch initial details
-      const res = await apiFetch<{ data: SearchResult[] }>(`/api/vehicles/search?plate=${targetPlate}`);
-      if (res.data.length > 0) {
-        setVehicleSummary(res.data[0]);
+      // Run both API requests in parallel
+      const [summaryRes, historyRes] = await Promise.all([
+        apiFetch<{ data: SearchResult[] }>(`/api/vehicles/search?plate=${targetPlate}`),
+        apiFetch<{ data: any[] }>(`/api/vehicles/${targetPlate}/history`)
+      ]);
+
+      if (summaryRes.data.length > 0) {
+        setVehicleSummary(summaryRes.data[0]);
       }
 
-      // Simulate the distributed delay for the animation
-      setTimeout(() => setSearchStatus('aggregating'), 1500);
-      
-      setTimeout(async () => {
-        await loadTrajectory(targetPlate);
-        setSearchStatus('complete');
-        setLoading(false);
-      }, 3000);
-
-    } catch (err) {
-      console.error(err);
-      setLoading(false);
-      setSearchStatus('idle');
-    }
-  };
-
-  const loadTrajectory = async (plate: string) => {
-    try {
-      const res = await apiFetch<{ data: any[] }>(`/api/vehicles/${plate}/history`);
-      const points: TrajectoryPoint[] = res.data
+      // Process history
+      const points: TrajectoryPoint[] = historyRes.data
         .filter(d => d.camera)
         .map((d, index) => ({
           order: index + 1,
@@ -88,19 +77,27 @@ export default function VehicleSearch() {
         setTrajectory({
           id: `traj-${Date.now()}`,
           query_id: 'search-query',
-          vehicle_plate: plate,
+          vehicle_plate: targetPlate,
           points,
-          first_seen: res.data[0].timestamp,
-          last_seen: res.data[res.data.length - 1].timestamp,
+          first_seen: historyRes.data[0].timestamp,
+          last_seen: historyRes.data[historyRes.data.length - 1].timestamp,
           total_detections: points.length,
           total_distance_km: 22.4, // Mock distance for UI matching
           status: 'complete'
         });
-      } else {
-        setTrajectory(null);
       }
+
+      // Wait a minimum time to let animation show 'aggregating' before 'complete'
+      setTimeout(() => {
+        setSearchStatus('complete');
+        setLoading(false);
+      }, 2000);
+
     } catch (err) {
       console.error(err);
+      clearTimeout(animTimer);
+      setLoading(false);
+      setSearchStatus('idle');
     }
   };
 
@@ -280,8 +277,14 @@ export default function VehicleSearch() {
           
           <div style={{ flex: 1, overflowY: 'auto', padding: 16, position: 'relative' }}>
             {!trajectory ? (
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-                No history available.
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)', fontSize: '0.875rem', textAlign: 'center', padding: 24 }}>
+                <Search size={32} color="var(--text-secondary)" style={{ marginBottom: 16, opacity: 0.2 }} />
+                <div style={{ fontWeight: 600, color: 'white', marginBottom: 8 }}>No Detection History Found</div>
+                {searchStatus === 'complete' 
+                  ? `There are no recorded detections for the plate "${plateQuery}". Make sure the plate is correct or wait for new detections.` 
+                  : searchStatus === 'idle' 
+                    ? 'Enter a vehicle number plate and click Search to view its citywide trajectory.'
+                    : 'Searching distributed edge nodes...'}
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column' }}>
