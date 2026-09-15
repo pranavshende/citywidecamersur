@@ -58,7 +58,7 @@ export default function EdgeNodes() {
       {loading ? (
         <div className="flex-1 flex items-center justify-center text-cyan"><Loader2 className="animate-spin" /></div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 360px), 1fr))', gap: 16 }}>
           {nodes.map(node => (
             <div key={node.id} className="panel" style={{ padding: 20 }}>
               <div className="flex justify-between items-start mb-4">

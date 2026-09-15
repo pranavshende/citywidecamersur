@@ -12,12 +12,12 @@ export default function LiveMonitoring() {
         <p style={{ color: 'var(--text-secondary)' }}>Full screen tactical view of edge node detections</p>
       </div>
 
-      <div style={{ display: 'flex', flex: 1, gap: 24, padding: 24, minHeight: 0 }}>
+      <div className="responsive-flex" style={{ display: 'flex', flex: 1, gap: 24, padding: 24, minHeight: 0 }}>
         <div className="panel" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
           <MapView trajectory={trajectory} systemStatus={systemStatus} />
         </div>
 
-        <div style={{ width: 400, display: 'flex', flexDirection: 'column', minHeight: 0, height: '100%', overflow: 'hidden' }}>
+        <div className="responsive-width-auto" style={{ width: 400, display: 'flex', flexDirection: 'column', minHeight: 0, height: '100%', overflow: 'hidden' }}>
           <EventFeed detections={detections} />
         </div>
       </div>

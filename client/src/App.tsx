@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAuth } from './hooks/useAuth';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
@@ -18,6 +19,7 @@ import './index.css';
 
 export default function App() {
   const { isAuthenticated, user, loginUser, logout } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   if (!isAuthenticated) {
     return <LoginPage onLogin={loginUser} />;
@@ -26,9 +28,16 @@ export default function App() {
   return (
     <Router>
       <div className="command-center">
-        <Sidebar />
+        {/* Mobile Drawer Overlay */}
+        <div 
+          className={`mobile-drawer-overlay ${isSidebarOpen ? 'show-on-mobile' : 'hide-on-mobile'}`}
+          onClick={() => setIsSidebarOpen(false)}
+        />
+
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        
         <div className="main-content">
-          <TopNav user={user} onLogout={logout} />
+          <TopNav user={user} onLogout={logout} onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
           <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             <Routes>
               <Route path="/" element={<Dashboard />} />

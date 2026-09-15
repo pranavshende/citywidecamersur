@@ -315,22 +315,115 @@ body {
   filter: invert(100%) hue-rotate(180deg) brightness(85%) contrast(110%);
 }
 
+/* ============================================
+   Map Container overrides
+   ============================================ */
+.leaflet-container {
+  background: #0a0a0a !important;
+}
+
 .leaflet-control-zoom {
-  border: 1px solid var(--border-glass) !important;
-  background: var(--bg-glass) !important;
-  backdrop-filter: blur(12px) !important;
-  border-radius: var(--radius-md) !important;
-  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  background: rgba(15,23,42,0.8) !important;
+  backdrop-filter: blur(8px) !important;
 }
 
-.leaflet-control-zoom a {
-  background: transparent !important;
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  background-color: transparent !important;
   color: var(--text-primary) !important;
-  border-color: var(--border-glass) !important;
+  border-color: rgba(255,255,255,0.1) !important;
 }
 
-.leaflet-control-zoom a:hover {
-  background: rgba(255,255,255,0.1) !important;
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: rgba(255,255,255,0.1) !important;
+}
+
+/* ============================================
+   Responsive Layout Utilities
+   ============================================ */
+@media (max-width: 768px) {
+  .responsive-flex {
+    flex-direction: column !important;
+  }
+  
+  .responsive-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .responsive-height-auto {
+    height: auto !important;
+    min-height: auto !important;
+  }
+  
+  .responsive-padding {
+    padding: 16px !important;
+  }
+  
+  .hide-on-mobile {
+    display: none !important;
+  }
+  
+  .show-on-mobile {
+    display: flex !important;
+  }
+  
+  /* Make main content scrollable on mobile and remove 100vh lock */
+  .command-center {
+    height: 100dvh; /* use dynamic viewport height for mobile browsers */
+  }
+  
+  .main-content {
+    overflow-y: auto;
+  }
+  
+  /* Reset hardcoded widths on mobile */
+  .responsive-width-auto {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Adjust sidebar for drawer mode */
+  .mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 40;
+  }
+  
+  .sidebar-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+    z-index: 50;
+    box-shadow: var(--shadow-glass);
+  }
+  
+  .sidebar-drawer.open {
+    transform: translateX(0);
+  }
+}
+
+/* Hide mobile-specific elements on desktop */
+@media (min-width: 769px) {
+  .show-on-mobile {
+    display: none !important;
+  }
+  
+  .mobile-drawer-overlay {
+    display: none !important;
+  }
+  
+  .sidebar-drawer {
+    position: relative !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 @tailwind base;

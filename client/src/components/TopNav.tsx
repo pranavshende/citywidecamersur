@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Search, Bell, User as UserIcon, ChevronDown } from 'lucide-react';
+import { Search, Bell, User as UserIcon, ChevronDown, Menu } from 'lucide-react';
 import { User } from '../types';
 
 interface TopNavProps {
   user: User | null;
   onLogout: () => void;
+  onMenuToggle?: () => void;
 }
 
-export default function TopNav({ user, onLogout }: TopNavProps) {
+export default function TopNav({ user, onLogout, onMenuToggle }: TopNavProps) {
   const [search, setSearch] = useState('');
 
   return (
@@ -21,8 +22,15 @@ export default function TopNav({ user, onLogout }: TopNavProps) {
       padding: '0 24px',
       zIndex: 20
     }}>
-      {/* Global Search */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+      {/* Global Search & Mobile Toggle */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 16 }}>
+        <button 
+          className="show-on-mobile btn-icon" 
+          onClick={onMenuToggle}
+          style={{ background: 'transparent', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)' }}
+        >
+          <Menu size={20} />
+        </button>
         <div style={{
           position: 'relative',
           width: '100%',

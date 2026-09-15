@@ -19,7 +19,7 @@ export default function Dashboard() {
       <KPIGrid />
 
       {/* Main Split Area */}
-      <div style={{ display: 'flex', flex: 1, gap: 16, padding: '0 24px', minHeight: 0 }}>
+      <div className="responsive-flex" style={{ display: 'flex', flex: 1, gap: 16, padding: '0 24px', minHeight: 0 }}>
         
         {/* Left: Map */}
         <div className="panel" style={{ flex: 1, position: 'relative', overflow: 'hidden', minHeight: 400 }}>
@@ -27,14 +27,14 @@ export default function Dashboard() {
         </div>
 
         {/* Right: Live Feed */}
-        <div style={{ width: 340, display: 'flex', flexDirection: 'column', minHeight: 0, height: '100%', overflow: 'hidden' }}>
+        <div className="responsive-width-auto" style={{ width: 340, display: 'flex', flexDirection: 'column', minHeight: 0, height: '100%', overflow: 'hidden' }}>
           <EventFeed detections={detections} />
         </div>
 
       </div>
 
       {/* Bottom Analytics Row */}
-      <div style={{ display: 'flex', gap: 16, padding: '16px 24px', height: 260 }}>
+      <div className="responsive-flex responsive-height-auto" style={{ display: 'flex', gap: 16, padding: '16px 24px', height: 260 }}>
         <div style={{ flex: 2, minWidth: 0 }}>
           <DetectionTrendChart />
         </div>

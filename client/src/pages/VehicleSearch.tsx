@@ -105,7 +105,7 @@ export default function VehicleSearch() {
     <div style={{ padding: 24, height: '100%', display: 'flex', flexDirection: 'column', gap: 24, overflowY: 'auto' }}>
       
       {/* Top Half */}
-      <div style={{ display: 'flex', gap: 24, minHeight: 340, flexWrap: 'wrap' }}>
+      <div className="responsive-flex" style={{ display: 'flex', gap: 24, minHeight: 340, flexWrap: 'wrap' }}>
         
         {/* Left: Search & Summary */}
         <div className="panel" style={{ flex: 1, minWidth: 400, display: 'flex', flexDirection: 'column', padding: 24 }}>
@@ -210,7 +210,7 @@ export default function VehicleSearch() {
       </div>
 
       {/* Bottom Half */}
-      <div style={{ display: 'flex', flex: 1, gap: 24, minHeight: 400 }}>
+      <div className="responsive-flex" style={{ display: 'flex', flex: 1, gap: 24, minHeight: 400 }}>
         
         {/* Left: Map */}
         <div className="panel" style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, position: 'relative' }}>

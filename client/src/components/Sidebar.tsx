@@ -1,7 +1,12 @@
-import { LayoutDashboard, Radio, Search, Bell, Activity, Video, Database, FileText, Settings } from 'lucide-react';
+import { LayoutDashboard, Radio, Search, Bell, Activity, Video, Database, FileText, Settings, X } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const menuItems = [
     { label: "Dashboard", path: "/", icon: <LayoutDashboard size={20} /> },
     { label: "Live Monitoring", path: "/live", icon: <Radio size={20} /> },
@@ -15,36 +20,37 @@ export default function Sidebar() {
   ];
 
   return (
-    <div style={{
+    <div className={`sidebar-drawer ${isOpen ? 'open' : ''}`} style={{
       width: 260,
       background: 'var(--bg-secondary)',
       borderRight: '1px solid var(--border-subtle)',
       display: 'flex',
       flexDirection: 'column',
-      zIndex: 20
+      zIndex: 50
     }}>
       <div style={{
         padding: '24px 20px',
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
+        justifyContent: 'space-between',
         borderBottom: '1px solid var(--border-subtle)'
       }}>
-        <div style={{
-          width: 32,
-          height: 32,
-          borderRadius: 8,
-          background: 'var(--accent-cyan-dim)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <span style={{ color: 'var(--accent-cyan)', fontWeight: 800 }}>C</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--accent-cyan-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: 'var(--accent-cyan)', fontWeight: 800 }}>C</span>
+          </div>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: '1.1rem', letterSpacing: '0.5px' }}>CITYWIDE <span className="text-cyan">ANPR</span></div>
+            <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>Distributed Edge Surveillance</div>
+          </div>
         </div>
-        <div>
-          <div style={{ fontWeight: 800, fontSize: '1.1rem', letterSpacing: '0.5px' }}>CITYWIDE <span className="text-cyan">ANPR</span></div>
-          <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>Distributed Edge Surveillance</div>
-        </div>
+        <button 
+          className="show-on-mobile btn-icon" 
+          onClick={onClose}
+          style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)' }}
+        >
+          <X size={20} />
+        </button>
       </div>
 
       <nav style={{ padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
