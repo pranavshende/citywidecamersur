@@ -29,7 +29,7 @@ export default function App() {
         <Sidebar />
         <div className="main-content">
           <TopNav user={user} onLogout={logout} />
-          <div style={{ flex: 1, position: 'relative' }}>
+          <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/live" element={<LiveMonitoring />} />
