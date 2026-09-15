@@ -1,0 +1,76 @@
+{
+  "target_vehicle": {
+    "plate": "MH12AB1234",
+    "color": "white",
+    "type": "SUV"
+  },
+  "cameras": {
+    "CAM-01": { "lat": 21.1458, "lng": 79.0882 },
+    "CAM-02": { "lat": 21.1495, "lng": 79.0810 },
+    "CAM-03": { "lat": 21.1520, "lng": 79.0720 },
+    "CAM-04": { "lat": 21.1400, "lng": 79.0650 },
+    "CAM-05": { "lat": 21.1300, "lng": 79.0500 },
+    "CAM-06": { "lat": 21.1610, "lng": 79.0830 },
+    "CAM-07": { "lat": 21.1630, "lng": 79.0780 },
+    "CAM-08": { "lat": 21.1450, "lng": 79.1150 },
+    "CAM-09": { "lat": 21.1480, "lng": 79.1100 },
+    "CAM-10": { "lat": 21.0950, "lng": 79.0600 },
+    "CAM-11": { "lat": 21.0900, "lng": 79.0700 },
+    "CAM-12": { "lat": 21.1420, "lng": 79.1020 },
+    "CAM-13": { "lat": 21.1390, "lng": 79.1050 },
+    "CAM-14": { "lat": 21.1550, "lng": 79.1100 },
+    "CAM-15": { "lat": 21.1750, "lng": 79.0750 }
+  },
+  "trajectory": [
+    "CAM-08",
+    "CAM-12",
+    "CAM-01",
+    "CAM-02",
+    "CAM-06",
+    "CAM-15"
+  ],
+  "detections": [
+    {
+      "camera": "CAM-01",
+      "edge_node": "EDGE-01",
+      "delay_ms": 2000,
+      "confidence": 0.962,
+      "timestamp_offset_sec": 0,
+      "speed_kmh": 35
+    },
+    {
+      "camera": "CAM-02",
+      "edge_node": "EDGE-01",
+      "delay_ms": 5000,
+      "confidence": 0.948,
+      "timestamp_offset_sec": 104,
+      "speed_kmh": 42
+    },
+    {
+      "camera": "CAM-04",
+      "edge_node": "EDGE-02",
+      "delay_ms": 9000,
+      "confidence": 0.971,
+      "timestamp_offset_sec": 263,
+      "speed_kmh": 38
+    },
+    {
+      "camera": "CAM-05",
+      "edge_node": "EDGE-03",
+      "delay_ms": 13000,
+      "confidence": 0.953,
+      "timestamp_offset_sec": 414,
+      "speed_kmh": 40
+    }
+  ],
+  "background_vehicles": [
+    { "plate": "MH31CD5678", "color": "black", "type": "sedan" },
+    { "plate": "KA05EF9012", "color": "red", "type": "hatchback" },
+    { "plate": "DL02GH3456", "color": "blue", "type": "truck" },
+    { "plate": "MH14JK7890", "color": "silver", "type": "sedan" },
+    { "plate": "GJ01LM2345", "color": "grey", "type": "SUV" },
+    { "plate": "TN09NP6789", "color": "white", "type": "hatchback" },
+    { "plate": "RJ14QR0123", "color": "black", "type": "truck" },
+    { "plate": "UP32ST4567", "color": "red", "type": "sedan" }
+  ]
+}
