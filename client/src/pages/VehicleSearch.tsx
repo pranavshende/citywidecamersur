@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, MapPin, Download, Loader2, Car, Maximize } from 'lucide-react';
+import { MapPin, Download, Loader2, Car, Maximize, Database } from 'lucide-react';
 import { apiFetch } from '../lib/api';
 import MapView from '../components/MapView';
 import { useWebSocket } from '../hooks/useWebSocket';
@@ -22,7 +22,6 @@ interface SearchResult {
 export default function VehicleSearch() {
   const [plateQuery, setPlateQuery] = useState('MH12AB1234'); // Default based on UI design
   const [loading, setLoading] = useState(false);
-  const [selectedPlate, setSelectedPlate] = useState<string | null>(null);
   const [trajectory, setTrajectory] = useState<Trajectory | null>(null);
   const [searchStatus, setSearchStatus] = useState<'idle' | 'searching' | 'aggregating' | 'complete'>('idle');
   const [vehicleSummary, setVehicleSummary] = useState<SearchResult | null>(null);
@@ -41,7 +40,6 @@ export default function VehicleSearch() {
 
     setLoading(true);
     setSearchStatus('searching');
-    setSelectedPlate(null);
     setTrajectory(null);
     setVehicleSummary(null);
 
@@ -69,7 +67,6 @@ export default function VehicleSearch() {
   };
 
   const loadTrajectory = async (plate: string) => {
-    setSelectedPlate(plate);
     try {
       const res = await apiFetch<{ data: any[] }>(`/api/vehicles/${plate}/history`);
       const points: TrajectoryPoint[] = res.data

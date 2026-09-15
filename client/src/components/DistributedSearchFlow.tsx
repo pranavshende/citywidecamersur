@@ -27,9 +27,6 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
     { id: 'Edge Node 03', zone: 'Zone C', cameras: 3 }
   ];
 
-  const getEdgeOpacity = (step: number) => activeStep >= step ? 1 : 0.3;
-  const getEdgeAnimation = (step: number) => activeStep === step ? 'animate-pulse' : '';
-
   return (
     <div className="panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
@@ -69,7 +66,7 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
         {/* User Search */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: getEdgeOpacity(1), transition: 'opacity 0.5s' }}>
           <div style={{ width: 64, height: 64, borderRadius: '50%', border: '2px solid var(--accent-cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(6,182,212,0.1)', animation: activeStep === 1 ? 'pulse 2s infinite' : 'none' }}>
-            <SearchIcon style={{ color: 'var(--accent-cyan)' }} size={24} />
+            <SearchIcon color="var(--accent-cyan)" size={24} />
           </div>
           <div style={{ fontSize: '0.75rem', textAlign: 'center' }}>
             <div style={{ fontWeight: 700 }}>Vehicle Search</div>
@@ -84,7 +81,7 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
         {/* Coordinator */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: getEdgeOpacity(2), transition: 'opacity 0.5s' }}>
           <div style={{ width: 80, height: 80, borderRadius: 12, border: '2px solid #6366f1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(99,102,241,0.1)', animation: activeStep === 2 ? 'pulse 2s infinite' : 'none' }}>
-            <Database style={{ color: '#818cf8' }} size={32} />
+            <Database color="#818cf8" size={32} />
           </div>
           <div style={{ fontSize: '0.75rem', textAlign: 'center' }}>
             <div style={{ fontWeight: 700, color: '#818cf8' }}>Coordinator</div>
@@ -105,15 +102,15 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
           {nodes.map((node, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, opacity: getEdgeOpacity(3), transition: 'opacity 0.5s', transitionDelay: `${i * 100}ms` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, border: '1px solid rgba(16,185,129,0.5)', borderRadius: 8, padding: 8, background: 'rgba(16,185,129,0.05)', width: 144, animation: activeStep === 3 ? 'pulse 2s infinite' : 'none' }}>
-                <Server size={16} style={{ color: '#34d399' }} />
+                <Server size={16} color="#34d399" />
                 <div style={{ fontSize: '0.65rem', lineHeight: 1.2 }}>
                   <div style={{ fontWeight: 700, color: '#34d399' }}>{node.id}</div>
                   <div style={{ color: 'var(--text-secondary)' }}>({node.zone})</div>
                 </div>
               </div>
-              <ChevronRight size={14} style={{ color: 'rgba(16,185,129,0.5)', opacity: getEdgeOpacity(4) }} />
+              <ChevronRight size={14} color="rgba(16,185,129,0.5)" style={{ opacity: getEdgeOpacity(4) }} />
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, border: '1px solid rgba(59,130,246,0.5)', borderRadius: 8, padding: 8, background: 'rgba(59,130,246,0.05)', width: 112, opacity: getEdgeOpacity(4), transition: 'opacity 0.5s', transitionDelay: `${200 + i * 100}ms`, animation: activeStep === 4 ? 'pulse 2s infinite' : 'none' }}>
-                <Video size={14} style={{ color: '#60a5fa' }} />
+                <Video size={14} color="#60a5fa" />
                 <div style={{ fontSize: '0.65rem', lineHeight: 1.2 }}>
                   <div style={{ fontWeight: 700, color: '#60a5fa' }}>Cameras</div>
                   <div style={{ color: 'var(--text-secondary)' }}>({node.cameras})</div>
@@ -134,7 +131,7 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
         {/* Final Result */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, opacity: getEdgeOpacity(5), transition: 'opacity 0.5s', transitionDelay: '300ms' }}>
           <div style={{ width: 96, height: 96, borderRadius: 12, border: '2px solid #34d399', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(16,185,129,0.1)', animation: activeStep === 5 ? 'pulse 2s infinite' : 'none' }}>
-            <Database style={{ color: '#34d399' }} size={32} />
+            <Database color="#34d399" size={32} />
           </div>
           <div style={{ fontSize: '0.65rem', textAlign: 'center', width: 112 }}>
             <div style={{ fontWeight: 700, color: '#34d399', fontSize: '0.75rem', marginBottom: 4 }}>Aggregated Results</div>
