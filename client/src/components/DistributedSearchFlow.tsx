@@ -27,6 +27,8 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
     { id: 'Edge Node 03', zone: 'Zone C', cameras: 3 }
   ];
 
+  const getEdgeOpacity = (step: number) => activeStep >= step ? 1 : 0.3;
+
   return (
     <div className="panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
@@ -143,10 +145,3 @@ export default function DistributedSearchFlow({ status, plate }: Props) {
     </div>
   );
 }
-
-const SearchIcon = ({ size, className }: { size: number, className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <circle cx="11" cy="11" r="8" />
-    <path d="m21 21-4.3-4.3" />
-  </svg>
-);
