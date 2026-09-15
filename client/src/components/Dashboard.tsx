@@ -27,7 +27,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right: Live Feed */}
-        <div style={{ width: 340, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div style={{ width: 340, display: 'flex', flexDirection: 'column', minHeight: 0, height: '100%', overflow: 'hidden' }}>
           <EventFeed detections={detections} />
         </div>
 
