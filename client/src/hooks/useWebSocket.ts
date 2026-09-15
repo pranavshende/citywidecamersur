@@ -45,6 +45,7 @@ export function useWebSocket() {
               break;
 
             case 'detection:found':
+              if (data.plate && !data.number_plate) data.number_plate = data.plate;
               setDetections(prev => [data, ...prev].slice(0, 50));
               break;
 
